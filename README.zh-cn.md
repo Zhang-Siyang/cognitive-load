@@ -1,17 +1,17 @@
 # 认知负荷才是关键
 
-[Prompt](https://github.com/zakirullin/cognitive-load/blob/main/README.prompt.md) | [Readable version](https://minds.md/zakirullin/cognitive) | [Chinese](https://github.com/zakirullin/cognitive-load/blob/main/README.zh-cn.md) | [Korean](README.ko.md) | [Turkish](README.tr.md) | [Japanese](README.ja.md)
+[Prompt](README.prompt.md) | [MindsMD](https://minds.md/zakirullin/cognitive) | [English](README.md) | [Korean](README.ko.md) | [Turkish](README.tr.md) | [Japanese](README.ja.md)
 
 *这是一份持续更新的文档，最后更新：**2025 年 9 月**。欢迎你的贡献！*
 
-## Introduction
+## 简介
 这世上充斥着各种流行术语与“最佳实践”，但大多数最终都失灵了。我们需要更基础、更不可能出错的东西。  
 
-有时我们在阅读代码时会感到困惑。困惑会消耗时间和金钱。困惑源于过高的“认知负荷”。它不是某种花哨的抽象概念，而是**一种基本的人类约束**。它不是臆想出来的，它的确存在，而且我们能真切感受到。  
+有时我们在阅读代码时会感到困惑。困惑消耗时间和金钱。困惑源于过高的“认知负荷”。它不是某种花哨的抽象概念，而是**人类的一种基本约束**。它不是臆想出来的，它的确存在，而且我们能真切感受到。  
 
-鉴于我们在阅读与理解代码上所花费的时间远多于书写代码，我们应当持续地自问：我们是否正在把过多的认知负荷嵌入到代码中。 
+鉴于我们在阅读与理解代码上所花费的时间远多于书写代码所花费的，我们应当持续地自省：我们是否正在把过多的认知负荷添加到代码中。 
 
-## Cognitive load
+## 认知负荷(Cognitive load)
 > 认知负荷是指开发者为了完成一项任务需要动多少脑子。
 
 阅读代码时，你会把变量的取值、控制流逻辑、调用序列等“装”进脑子里。普通人的工作记忆大约能同时容纳[四个这样的信息块](https://github.com/zakirullin/cognitive-load/issues/16)。一旦认知负荷接近这个阈值，理解就会变得困难得多。
@@ -19,7 +19,7 @@
 *假设我们被要求去修补一个完全陌生的项目。有人告诉我们，之前有位非常聪明的开发者贡献过：用了很多酷炫的架构、花哨的库、时髦的技术。也就是说，**作者为我们制造了极高的认知负荷。***
 
 <div align="center">
-  <img src="/img/cognitiveloadv6.png" alt="Cognitive load" width="750">
+  <img src="/img/cognitiveloadv6.png" alt="随着开发的深入，程序和脑子都变成了一团浆糊" width="750">
 </div>
 
 我们应该尽可能降低项目中的认知负荷。
@@ -31,13 +31,13 @@
 
 > 我们会以一种非正式的方式使用“认知负荷”这个术语；有时它与认知负荷的科学概念一致，但我们并不确切知道在哪些地方一致、哪些地方不一致。
 
-## Types of cognitive load
+## 认知负荷的类型
 **内在负荷（Intrinsic）**——由任务本身的固有难度引起。它不可消减，是软件开发的核心所在。  
 
 **外在负荷（Extraneous）**——由信息的呈现方式引入。由与任务不直接相关的因素造成，比如“聪明作者”的各种癖好。它可以被大幅削减。本文将聚焦于这种外在认知负荷。 
 
 <div align="center">
-  <img src="/img/smartauthorv14thanksmari.png" alt="内在与外在负荷" width="600">
+  <img src="/img/smartauthorv14thanksmari.png" alt="如果外在负荷占据了主导地位，情况就不再是喜闻乐见了" width="600">
 </div>
 
 下面直接看一些外在认知负荷的具体、可操作的例子。
@@ -51,7 +51,7 @@
 
 > 我们的大脑远比这复杂且尚未被充分理解，但这个简化模型足以用来说明问题。
 
-## Complex conditionals 
+## 复杂的条件控制 
 ```go
 if val > someConstant // 🧠+
     && (condition2 || condition3) // 🧠+++, 前置条件需为 true，c2 或 c3 必须其一为 true
@@ -71,7 +71,7 @@ if isValid && isAllowed && isSecure {
 }
 ```
 
-## Nested ifs
+## 多层嵌套的 if 判断
 ```go
 if isValid { // 🧠+, 嵌套代码仅适用于有效输入
     if isSecure { // 🧠++, 仅对有效且安全的输入执行
@@ -80,7 +80,7 @@ if isValid { // 🧠+, 嵌套代码仅适用于有效输入
 } 
 ```
 
-与“提前返回”对比：
+对比一下“提前返回”式的：
 ```go
 if !isValid
     return
@@ -88,14 +88,14 @@ if !isValid
 if !isSecure
     return
 
-// 🧠, 不必关心之前的返回；能走到这里就表示一切 OK
+// 🧠, 不必关心之前的 return；能走到这里就表示一切 OK
 
 stuff // 🧠+
 ```
 
-仅关注“快乐路径”（happy path），从而将各类前置条件从工作记忆中解放出来。
+通过这种写法，我们可以专注于主流程，从而使“工作记忆”从各种先决条件中解放出来。
 
-## Inheritance nightmare
+## 多继承噩梦
 我们要对管理员用户做一些改动：`🧠`
 
 `AdminController extends UserController extends GuestController extends BaseController`
@@ -109,16 +109,16 @@ stuff // 🧠+
 
 尽量倾向组合而非继承。细节不展开——参考资料已经[汗牛充栋](https://www.youtube.com/watch?v=hxGOiiR9ZKg)。
 
-## Too many small methods, classes or modules
+## 过多微型方法，类或模块
 > 在这里，“方法”“类”“模块”可以互换理解 
  
 “方法少于 15 行”“类应该小”这些准则，实践下来并不总是对的。
 
 **深模块（Deep module）**——接口简单，但功能强大、实现复杂  
-**浅模块（Shallow module）**——相较其提供的少量功能，接口反而比较复杂 
+**浅模块（Shallow module）**——相较其提供的少量功能，对外提供的接口反而比较复杂 
 
 <div align="center">
-  <img src="/img/deepmodulev8.png" alt="深模块" width="700">
+  <img src="/img/deepmodulev8.png" alt="相较于深度“抽象”的浅模块其内部犬牙交错的调用关系，深模块可能因为链条清晰而让理解与维护成为可能" width="700">
 </div>
 
 浅模块过多会让项目难以理解。**不仅要记住每个模块的职责，还要记住它们之间的所有交互**。要理解一个浅模块的目的，往往得先看完与之相关的所有模块功能。频繁在这些浅组件之间跳转令人心力交瘁，<a target="_blank" href="https://blog.separateconcerns.com/2023-09-11-linear-code.html">线性思维</a>对人类更自然。  
@@ -142,33 +142,33 @@ lseek(fd, offset, referencePosition)
 close(fd)
 ```
 
-现代实现可能有**数十万行代码**。大量复杂性被藏在“引擎盖之下”。但接口简单，用起来就容易。
+现代实现可以有**数十万行代码**。尽管背后是大量复杂性逻辑，但因为接口设计简单，使用就容易。
 
-> 这个深模块的例子来自 John K. Ousterhout 的著作 [A Philosophy of Software Design](https://web.stanford.edu/~ouster/cgi-bin/book.php)。此书不仅直击软件开发复杂性的本质，还对 Parnas 那篇影响深远的论文 [On the Criteria To Be Used in Decomposing Systems into Modules](https://www.win.tue.nl/~wstomv/edu/2ip30/references/criteria_for_modularization.pdf)做了极佳的诠释。二者皆为必读。更多延伸阅读：[A Philosophy of Software Design vs Clean Code](https://github.com/johnousterhout/aposd-vs-clean-code)、[It's probably time to stop recommending Clean Code](https://qntm.org/clean)、[Small Functions considered Harmful](https://copyconstruct.medium.com/small-functions-considered-harmful-91035d316c29)。
+> 这个深模块的例子来自 John K. Ousterhout 的著作 [《软件设计的哲学》](https://web.stanford.edu/~ouster/cgi-bin/book.php)。此书不仅直击软件开发复杂性的本质，还对 Parnas 那篇影响深远的论文 [《On the Criteria To Be Used in Decomposing Systems into Modules》(论将系统分解为模块的标准)](https://www.win.tue.nl/~wstomv/edu/2ip30/references/criteria_for_modularization.pdf)做了极佳的诠释。二者皆为必读。更多延伸阅读：[《〈软件设计的哲学〉与〈代码整洁之道〉》](https://github.com/johnousterhout/aposd-vs-clean-code)、[《可能是时候停止推荐〈代码整洁之道〉了》](https://qntm.org/clean)、[《小型函数的弊端》](https://copyconstruct.medium.com/small-functions-considered-harmful-91035d316c29)。
 
-P.S. 如果你以为我们是在为臃肿、职责过多的“上帝对象”摇旗呐喊，那你就误解了。
+P.S. 如果你以为我们是在为臃肿、职责过多的“万能对象”摇旗呐喊，那你就误解了。
 
-## Responsible for one thing
+## 关于“仅为一件事负责”
 我们常常遵循一种模糊的原则，结果造出一堆浅模块：“一个模块应该只负责一件事，而且仅此一件”。但这“一件事”到底是什么？实例化一个对象也算一件事，对吧？那么 [MetricsProviderFactoryFactory](https://minds.md/benji/frameworks) 就理所当然？**这类类名和接口带来的心智负担，往往比它们整个实现还高——这算什么抽象？**哪儿不对劲了。  
 
 我们修改系统是为满足用户和利益相关方的诉求。我们应当对他们负责。  
 
 > 一个模块应当且只应当对一个用户或利益相关方负责。  
 
-这才是单一职责原则（SRP）的真正内涵。通俗地说，如果我们在一个地方引入了 bug，然后两位不同业务条线的人都来投诉——我们就违反了该原则。它与模块里“做了几件事”并无直接关系。    
+这才是单一职责原则（SRP）的真正内涵。通俗地说，如果我们在一个地方引入了 bug，然后两位不同业务条线的人都来投诉——我们就违反了该原则。它与我们在模块中做了多少事情无关。    
 
 但即便如此，这条规则也可能“利少弊多”。每个人对它的理解都不尽相同。更好的做法是看它们带来了多少认知负荷。记住“一个地方的变更会在不同业务流中引发一串连锁反应”本身就很费脑力。就这样，无须再学什么花哨术语。  
 
-## Too many shallow microservices
+## 过多的“浅微服务”
 “浅-深模块”原则与规模无关，同样适用于微服务架构。浅微服务太多，毫无益处——行业正朝着某种“宏服务”发展，即不那么浅（=更深）的服务。最糟且最难修复的现象之一是所谓“分布式单体”，它往往源于过度细粒度、过度浅化的拆分。
 
-我曾为一家初创公司做咨询，五个开发做了 17（！）个微服务。他们比计划落后了 10 个月，离公测遥遥无期。每个新需求都会触动 4+ 个微服务。在这样一个分布式系统里，复现和调试一个问题要花掉极长时间。上市时间和认知负荷都高得令人无法接受。`🤯`  
+我曾为一家初创公司做咨询，五个开发做了 17（！）个微服务。他们比计划落后了 10 个月，离正式发布遥遥无期。每个新需求都需要修改 4+ 个微服务。在这样一个分布式系统里，复现和调试一个问题要花掉极长时间。正式推出的估时和认知负荷都高得令人无法接受。`🤯`  
 
-这是应对新系统不确定性的正确方式吗？在一开始就厘清正确的逻辑边界极其困难。关键是尽可能晚地做决定（但又要在负责范围内），因为那时你手头掌握的信息最多。若一上来就引入网络层，我们的设计决策从一开始就变得难以回退。团队给出的唯一理由是：“FAANG 证明了微服务架构是有效的”。*醒醒吧，该从大梦中回神了。*
+这是应对新系统不确定性的正确方式吗？在一开始就厘清正确的逻辑边界极其困难。关键是在合理的范围内尽可能晚地做决定，因为那时你手头掌握的信息最多。若一上来就引入网络层，我们的设计决策从一开始就变得难以回退。团队给出的唯一理由是：“FAANG（脸书、亚马逊、苹果、网飞和谷歌）证明了微服务架构是有效的”。*醒醒吧，别再做不切实际的美梦了。*
 
-[Tanenbaum-Torvalds 辩论](https://en.wikipedia.org/wiki/Tanenbaum%E2%80%93Torvalds_debate)曾指出，Linux 的单体设计有缺陷且过时，应改用微内核架构。确实，从“理论与美学”的角度看，微内核似乎更优。然而从实践看——三十年过去了，基于微内核的 GNU Hurd 仍在路上，而单体结构的 Linux 无处不在。这个页面跑在 Linux 上，你的智能茶壶也跑在 Linux 上。单体的 Linux。
+[Tanenbaum-Torvalds 辩论](https://en.wikipedia.org/wiki/Tanenbaum%E2%80%93Torvalds_debate)曾指出，Linux 的单体设计有缺陷且过时，应改用微内核架构。确实，从“理论与美学”的角度看，微内核似乎更优。然而从实践的角度看——三十年过去了，基于微内核的 GNU Hurd 仍在开发中，而单体结构的 Linux 无处不在。你现在阅读的这个网页由 Linux 伺服，你的智能茶壶都跑在 Linux 上，单体的 Linux。
 
-一个精心打造、模块真正隔离的单体，往往比一堆微服务更灵活，维护所需的心智负担也更小。只有当“独立部署”的需求变得至关重要时（比如团队规模扩张），才应考虑在模块之间加入网络层，逐步演进为未来的微服务。
+经过精心设计，由模块良好隔离的单体系统，往往比由众多微服务组成的架构更灵活，维护所需的心智负担也更小。只有当“独立部署”的需求变得至关重要时（比如团队规模扩张），才应考虑在模块之间加入网络层，逐步演进为未来的微服务。
 
 ## Feature-rich languages
 当我们喜欢的语言发布新特性时往往会很兴奋。我们会学习它们，并在代码里用起来。
